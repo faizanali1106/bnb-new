@@ -1,0 +1,113 @@
+/* ==========================================================================
+   Admin-only styles (imported ONLY from src/app/admin/layout.tsx).
+
+   Tailwind v4 without preflight, so nothing here resets the public site.
+   - theme(inline): utilities embed literal values instead of var(--…), so the
+     public tokens in globals.css (--radius-*, --font-sans, --ease-out, …)
+     can never leak into admin utilities, and vice versa.
+   - source(none) + @source "./": utilities are generated only from classes
+     used inside src/app/admin/**.
+   - Utilities are left UNLAYERED on purpose: the public globals.css is
+     unlayered, and layered utilities would always lose to its element rules
+     (e.g. `button { padding: 0 }`).
+   ========================================================================== */
+@layer theme;
+@import "tailwindcss/theme.css" layer(theme) theme(inline);
+@import "tailwindcss/utilities.css" source(none);
+@source "./";
+
+/* Bit & Bytes brand tokens (light values from the original site). */
+@theme inline {
+  --color-bnb-page: #ffffff;
+  --color-bnb-ink: #0f172a;
+  --color-bnb-soft: #5b6478;
+  --color-bnb-accent: #673493;
+  --color-bnb-line: #ebe4f2;
+  --color-bnb-card: #ffffff;
+  --color-bnb-pill: #f3eef9;
+  --color-bnb-bubble: #f5f0fa;
+  --color-bnb-cta: #12192b;
+  --color-bnb-band: #12192b;
+  --color-bnb-muted: #8993a8;
+  --color-bnb-brand: #673493;
+  --color-bnb-brand-cyan: #26b1ce;
+  --shadow-bnb: 0 20px 50px -20px rgba(15, 23, 42, 0.18);
+}
+
+/* --------------------------------------------------------------------------
+   Neutralise the public site's base styles while the admin UI is mounted.
+   (The public html font-size scales with the viewport; admin uses rem-based
+   Tailwind spacing, so pin it back to the browser default.)
+   -------------------------------------------------------------------------- */
+html:has([data-admin-ui]) {
+  font-size: 16px;
+}
+html:has([data-admin-ui]) body {
+  background: #f4f6f8;
+  color: #0f172a;
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+html:has([data-admin-ui]) body::before {
+  display: none;
+}
+[data-admin-ui] :focus-visible {
+  outline-color: #673493;
+}
+
+/* --------------------------------------------------------------------------
+   Brand component classes (scoped to the admin UI).
+   -------------------------------------------------------------------------- */
+[data-admin-ui] {
+  --bnb-page: #ffffff;
+  --bnb-ink: #0f172a;
+  --bnb-ink-soft: #5b6478;
+  --bnb-accent: #673493;
+  --bnb-line: #ebe4f2;
+  --bnb-card: #ffffff;
+  --bnb-pill: #f3eef9;
+  --bnb-cta: #12192b;
+  --bnb-card-shadow: 0 20px 50px -20px rgba(15, 23, 42, 0.18);
+}
+
+[data-admin-ui] .bnb-card {
+  background: var(--bnb-card);
+  border: 1px solid var(--bnb-line);
+  border-radius: clamp(12px, 1.2vw, 18px);
+  box-shadow: var(--bnb-card-shadow);
+}
+
+[data-admin-ui] .bnb-pill {
+  background: var(--bnb-pill);
+  color: var(--bnb-accent);
+}
+
+[data-admin-ui] .bnb-cta-btn,
+[data-admin-ui] .bnb-ghost-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  border-radius: clamp(10px, 1vw, 14px);
+  padding: clamp(0.7rem, 0.55rem + 0.45vw, 0.95rem) clamp(1.1rem, 0.85rem + 1vw, 1.7rem);
+  font-size: clamp(0.875rem, 0.8rem + 0.25vw, 0.98rem);
+  transition: opacity 0.15s ease;
+}
+[data-admin-ui] .bnb-cta-btn {
+  color: #fff;
+  background: var(--bnb-cta);
+}
+[data-admin-ui] .bnb-ghost-btn {
+  color: var(--bnb-ink);
+  border: 1px solid var(--bnb-line);
+}
+[data-admin-ui] .bnb-cta-btn:hover {
+  opacity: 0.9;
+}
+[data-admin-ui] .bnb-ghost-btn:hover {
+  opacity: 0.75;
+}

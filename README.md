@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bit & Bytes website
 
-## Getting Started
+The Bit & Bytes site (all bnb-portfolio content, pages, CMS and forms) rebuilt with the
+replicated Dapper-style components and motion: floating pill nav with springy mega-menu tiles,
+page-cover transitions, split-word headline reveals, Lenis smooth scroll + GSAP ScrollTrigger,
+twinkling pixel clusters, grain overlay, sticky scroll sections and draggable carousels.
+Brand colour is the bnb primary `#673493` (light) / `#c4a5f5` (dark), with cyan `#26b1ce` as a
+secondary accent.
 
-First, run the development server:
+## Run it
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000. Production: `npm run build && npm start`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Env vars live in `.env` / `.env.local` (copied from bnb-portfolio; see `.env.example`):
+Supabase (CMS content, careers applications, uploads), EmailJS (contact + application emails),
+reCAPTCHA v2, Slack webhook, CMS admin password, cron secret.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Pages
 
-## Learn More
+| Route | Content |
+| --- | --- |
+| `/` | Hero with animated circuit mark, client logo marquee, situations, offer ladder (sticky phone), 10 service areas, featured work carousel, products, process timeline, team ring, why us, industries, testimonials, stack, FAQ, enquiry form |
+| `/services`, `/services/[slug]` | Service index (sticky groups), group pages, and core/sub service pages (20-section template for core services) |
+| `/offers/[offer]` | AI Discovery Workshop, AI Pilot, AI Pod |
+| `/industries`, `/industries/[industry]` | Industry index and detail pages |
+| `/work`, `/work/[slug]` | Filterable case studies, products, core projects, case study pages |
+| `/company`, `/company/team` | Story, how we work, beliefs, numbers, team directory (from CMS) |
+| `/careers`, `/careers/[id]`, `/careers/thank-you` | Jobs from CMS, search + infinite list, job detail with application form (resume auto-fill, duplicate check, screening questions) |
+| `/contact`, `/resources`, `/trust` | Contact form + map, guides/articles/FAQ, trust centre |
+| `/admin` | CMS (projects, jobs, team, testimonials, applications) — unchanged functionality |
 
-To learn more about Next.js, take a look at the following resources:
+## Where things are
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Content:** `src/data/*` (services, offers, work, industries, nav, site copy) — same files as bnb-portfolio.
+  CMS-managed content (jobs, team, testimonials, socials, footer tagline) loads from Supabase via
+  `src/lib/cms/load-from-supabase.ts`, falling back to `src/lib/cms/defaults.ts`.
+- **Design tokens & styles:** `src/app/globals.css` (top of file). Fonts in `src/app/layout.tsx`.
+- **Building blocks:** `src/components/blocks/*` (sections, cards, forms, FAQ, carousels),
+  `src/components/ui/*` (buttons, arrows, split text, reveals, pixels), `src/components/home/*`.
+- **Backend:** `src/app/api/*` and `src/lib/*` (ported from bnb-portfolio to Next 16).
